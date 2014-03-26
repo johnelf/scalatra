@@ -1,18 +1,32 @@
 package com.example
 
 import org.scalatra._
-import scalate.ScalateSupport
+import org.json4s.{DefaultFormats, Formats}
+import scala.Predef.String
+import org.scalatra.json._
 
-class HelloWorldServlet extends HelloworldStack {
+case class Person(name: String, age: Int)
+
+class HelloWorldServlet extends ScalatraServlet with JacksonJsonSupport {
+  protected implicit val jsonFormats: Formats = DefaultFormats
+
+  before() {
+    contentType = formats("json")
+  }
 
   get("/hello") {
-    <html>
-      <body>
-        <h1>Hello, world!</h1>
-      </body>
-    </html>
+    Person("robot", 1)
   }
-  
+
+  post("/signup") {
+    val body = parsedBody.extract[Person]
+    Ok(body.name)
+  }
+
+  object People{
+    val all = List(Person("alex", 20), Person("Bob", 30))
+  }
+
 }
 
 
