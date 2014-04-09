@@ -7,7 +7,7 @@ import org.scalatra.json._
 
 case class Person(name: String, age: Int)
 
-class HelloWorldServlet extends ScalatraServlet with JacksonJsonSupport {
+class HelloWorldServlet extends ScalatraServlet with JacksonJsonSupport with DatabaseSessionSupport{
   protected implicit val jsonFormats: Formats = DefaultFormats
 
   before() {
